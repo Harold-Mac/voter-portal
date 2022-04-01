@@ -7,6 +7,7 @@ User = get_user_model()
 class CreateUserForm(UserCreationForm):
 	first_name = forms.CharField(max_length=30, required=False, label="First Name")
 	last_name = forms.CharField(max_length=30, required=False)
+	check = forms.BooleanField(required = True)
 
 
 	class Meta:

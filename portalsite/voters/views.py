@@ -63,12 +63,13 @@ def createacc_view(request,*args,**kwargs):
             form = CreateUserForm(request.POST)
             if form.is_valid():
                 form.save()
-                messages.success(request,"Account Created")
+                messages.success(request,"Account Created!")
                 return redirect("creation")
             else:
+                messages.warning(request,"Invalid Registration.")
                 return redirect("creation")
         except IntegrityError:
-            messages.warning(request,"Invalid Information")
+            messages.warning(request,"Invalid Registration.")
             return redirect("creation")
     else:
         return render(request,"createaccount.html", {'form':form})
