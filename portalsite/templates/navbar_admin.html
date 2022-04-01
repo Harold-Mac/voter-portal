@@ -24,9 +24,18 @@
       </a>
     </a>
     
-    <div class="white sidebar-heading">Administrator</div>
-    <p>
-    <hr class="sidebar-divider" />
+    <div class="text-white sidebar-heading">
+      {%if user.is_voter%}
+        Voter
+      {%elif user.is_rep%}
+        Representative
+      {%elif user.is_faci%}
+        Facilitator
+      {%else%}
+        Administrator
+      {%endif%}</div>
+      <p>
+      <hr class="sidebar-divider" />
 
     <!-- Functions: only visible when logged in -->
     <div class="sidebar-heading">Functions</div>

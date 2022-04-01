@@ -25,7 +25,16 @@
         </a>
       </a>
       
-      <div class="sidebar-heading">{{name}}</div>
+      <div class="text-white sidebar-heading">
+        {%if user.is_voter%}
+          Voter
+        {%elif user.is_rep%}
+          Representative
+        {%elif user.is_faci%}
+          Facilitator
+        {%else%}
+          Administrator
+        {%endif%}</div>
       <div class="sidebar-heading">Status: Not Voted</div>
       <div class="sidebar-heading">Schedule: Not Set</div>
       <p>
