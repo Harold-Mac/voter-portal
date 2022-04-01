@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import path
-from voters.views import home_view,precinct_view,redirectview,createacc_view,login_view,scheduling_view,pwrecovery_view,profile_view,clang_view,logout_acc, testview
+from voters.views import home_view,precinct_view,redirectview,createacc_view,login_view,scheduling_view,pwrecovery_view,profile_view,clang_view,logout_acc, testview, markvotedview
 from adminside.views import ahome_view ,count_view,redir_view
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,5 +33,6 @@ urlpatterns = [
     path("admin-count",count_view,name="adminBallot"),
     path("admn/login",login_view,name='login'),
     path("logout_acc",logout_acc,name='logout'),
-    path("test",testview,name='test')
+    path("test",testview,name='test'),
+    path("markvoted/",markvotedview,name='markvoted'),
 ]

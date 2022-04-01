@@ -1,3 +1,4 @@
+from multiprocessing import context
 from random import randint
 from re import L
 import re
@@ -106,3 +107,10 @@ def logout_acc(request):
 
 def testview(request): #for testing of incorporated css and js files
     return render(request,"charts.html",{})
+
+def markvotedview(request):
+    user=request.user
+    info=Voter.objects.get(user=user)
+    
+    context = {'user': user, 'info': info}
+    return render(request, "markvoted.html", context)
