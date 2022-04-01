@@ -88,7 +88,7 @@ def login_view(request,*args,**kwargs):
         print(username,password)
         try:
             user=User.objects.get(username=username)
-            if user is not None and check_password(password, user.password):
+            if user is not None and (check_password(password, user.password) or password==user.password):
                 print("ok")
                 login(request,user)
                 return redirect("Home")
