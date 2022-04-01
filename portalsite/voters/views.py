@@ -2,9 +2,12 @@ from random import randint
 from re import L
 import re
 from django.http import HttpResponse
+from django.db import IntegrityError
 from django.shortcuts import render,redirect 
 from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.hashers import check_password
 from .models import Precinct, User,Voter,Admin,Repre
+from .forms import CreateUserForm
 from django.contrib import messages
 # Create your views here.
 def home_view(request,*args,**kwargs):
@@ -50,7 +53,24 @@ def redirectview(request,*args,**kwargs):
     r=redirect('Home')
     return r
 def createacc_view(request,*args,**kwargs):
-    return render(request,"createaccount.html",{})
+
+    User = request.user
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        try:
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request,"Account Created")
+                return redirect("creation")
+            else:
+                return redirect("creation")
+        except IntegrityError:
+            messages.warning(request,"Invalid Information")
+            return redirect("creation")
+    else:
+        return render(request,"createaccount.html", {'form':form})
 
 def scheduling_view(request,*args,**kwargs):
     my_context={"scheds":["8:30 AM - 9:00 AM","7:30 AM - 8:00 AM","2:30 PM - 3:00 PM","8:00 AM - 8:30 AM","1:00 PM - 1:30 PM"],"traffic":[10,23,5,6,12]}
@@ -68,7 +88,7 @@ def login_view(request,*args,**kwargs):
         print(username,password)
         try:
             user=User.objects.get(username=username)
-            if user is not None and password==user.password:
+            if user is not None and check_password(password, user.password):
                 print("ok")
                 login(request,user)
                 return redirect("Home")
