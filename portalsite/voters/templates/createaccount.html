@@ -14,186 +14,195 @@
           />
           <h1 class="h2 pt-3 text-gray-900 text-center">Create an Account</h1>
         </div>
-        
-        <!-- Left Side -->
-        <div class="col-lg-6 px-5">
-          <!-- Name -->
-          <form>
-            <div class="mb-3">
-              <label for="exampleInputfirstName1" class="form-label"
-                >First Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="InputfirstName1"
-                onchange="autofillUser()"
-              />
+        {% if messages %}
+          {% for m in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{m}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div class="mb-3">
-              <label for="exampleInputMidName1" class="form-label"
-                >Middle Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="InputMidName1"
-                onchange="autofillUser()"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputlastName1" class="form-label"
-                >Last Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="InputlastName1"
-                onchange="autofillUser()"
-              />
-            </div>
-            <!-- End of Name -->
+          {% endfor %}
+        {% endif %}
+        <form method='POST' action="">
+          {% csrf_token %}
+          <!-- Left Side -->
+          <div class="col-lg-6 px-5">
+            <!-- Name -->
+            
+              <div class="mb-3">
+                <label for="exampleInputfirstName1" class="form-label"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  name='first_name'
+                  class="form-control form-control-user"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputMidName1" class="form-label"
+                  >Middle Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="InputMidName1"
+                  onchange="autofillUser()"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputlastName1" class="form-label"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  name='last_name'
+                  class="form-control form-control-user"
+                />
+              </div>
+              <!-- End of Name -->
 
-            <!-- Address -->
-            <h3 class="mt-5 fst-italic">Address</h3>
-            <div class="mb-3">
-              <label for="exampleInputStreet1" class="form-label"
-                >Street</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputStreet1"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputBarangay1" class="form-label"
-                >Barangay</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputBarangay1"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputMunicipalityCity1" class="form-label"
-                >Municipality/City</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputMunicipalityCity1"
-              />
-            </div>
-            <div class="mb-4">
-              <label for="exampleInputProvince1" class="form-label"
-                >Province</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputProvince1"
-              />
-            </div>
-          </form>
-          <!-- End of Address -->
-        </div>
-        <!-- End of Left Side-->
-
-        <!-- Right Side -->
-        <div class="col-lg-6 px-5">
-          <!-- Voter's ID & Precinct Number -->
-          <h3 class="mt-5 fst-italic">Voter's Information</h3>
-          <form>
-            <div class="mb-3">
-              <label for="exampleInputVotersID1" class="form-label"
-                >Voter's ID</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputVotersID1"
-                readonly
-              />
-            </div>
-            <div class="mb-4 pb-4">
-              <label for="exampleInputPrecinctNumber1" class="form-label"
-                >Precinct Number</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="exampleInputPrecinctNumber1"
-                readonly
-              />
-            </div>
-            <!-- End of Voter's ID & Precinct Number -->
-
-            <div style="height: 14px"></div>
-            <!-- Account Details -->
-            <h3 class="mt-4 pt-5 fst-italic">Account Details</h3>
-            <div class="mb-3">
-              <label for="exampleAutoUsername1" class="form-label"
-                >Username</label
-              >
-              <input 
-                type="text"
-                class="form-control"
-                id="AutoUsername1"
-                readonly
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label"
-                >Email</label
-              >
-              <input
-                type="email"
-                class="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label"
-                >Password</label
-              >
-              <input
-                type="password"
-                class="form-control"
-                id="exampleInputPassword1"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputRetypePassword1" class="form-label"
-                >Retype Password</label
-              >
-              <input
-                type="password"
-                class="form-control"
-                id="exampleInputRetypePassword1"
-              />
-            </div>
-          </form>
-          <!-- End of Account Details -->
-        </div>
-        <!-- End of Right Side-->
-        <div class="container py-4 text-center">
-          <div class="mb-3 form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="exampleCheck1"
-            />
-            <label class="form-check-label" for="exampleCheck1"
-              >I agree that all information entered are true and anything
-              entered can be used against me for anything related to the
-              account</label
-            >
+              <!-- Address -->
+              <h3 class="mt-5 fst-italic">Address</h3>
+              <div class="mb-3">
+                <label for="exampleInputStreet1" class="form-label"
+                  >Street</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputStreet1"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputBarangay1" class="form-label"
+                  >Barangay</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputBarangay1"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputMunicipalityCity1" class="form-label"
+                  >Municipality/City</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputMunicipalityCity1"
+                />
+              </div>
+              <div class="mb-4">
+                <label for="exampleInputProvince1" class="form-label"
+                  >Province</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputProvince1"
+                />
+              </div>
+            
+            <!-- End of Address -->
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
+          <!-- End of Left Side-->
+
+          <!-- Right Side -->
+          <div class="col-lg-6 px-5">
+            <!-- Voter's ID & Precinct Number -->
+            <h3 class="mt-5 fst-italic">Voter's Information</h3>
+            
+              <div class="mb-3">
+                <label for="exampleInputVotersID1" class="form-label"
+                  >Voter's ID</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputVotersID1"
+                  readonly
+                />
+              </div>
+              <div class="mb-4 pb-4">
+                <label for="exampleInputPrecinctNumber1" class="form-label"
+                  >Precinct Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputPrecinctNumber1"
+                  readonly
+                />
+              </div>
+              <!-- End of Voter's ID & Precinct Number -->
+
+              <div style="height: 14px"></div>
+              <!-- Account Details -->
+              <h3 class="mt-4 pt-5 fst-italic">Account Details</h3>
+              <div class="mb-3">
+                <label for="exampleAutoUsername1" class="form-label"
+                  >Username</label
+                >
+                <input 
+                  type="text"
+                  class="form-control"
+                  id="AutoUsername1"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  name='email'
+                  class="form-control form-control-user"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  name='password1'
+                  class="form-control form-control-user"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputRetypePassword1" class="form-label"
+                  >Retype Password</label
+                >
+                <input
+                  type="password"
+                  name='password2'
+                  class="form-control form-control-user"
+                />
+              </div>
+            
+            <!-- End of Account Details -->
+          </div>
+          <!-- End of Right Side-->
+          <div class="container py-4 text-center">
+            <div class="mb-3 form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="exampleCheck1"
+              />
+              <label class="form-check-label" for="exampleCheck1"
+                >I agree that all information entered are true and anything
+                entered can be used against me for anything related to the
+                account</label
+              >
+            </div>
+            <input type="submit" class="btn btn-primary" name="Create User">
+          </div>
+        </form>
       </div>
     </div>
   </div>
