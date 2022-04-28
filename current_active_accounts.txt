@@ -1,10 +1,8 @@
 Voters
-
 javidad1, teks1234
 jdc123, cs192hart
 
 Admin
-
 admin, word1234
 
 
