@@ -1,9 +1,38 @@
 {% load static %}
+<style>
+  .fbut{
+    display:block;
+    background-color: inherit;
+    font-family: inherit;
+    border:0;
+  }
+  .c-div li{
+    
+    display:block;
+    color:inherit;
+    font-family:inherit;
+    font-size:0.8em;
+  }
+  .c-div li a{
+    color:#ddd;
+    display:block;
+    text-decoration:none;
+    decoration:none;
+  }
+  .c-div li a:hover{
+    color:#fff;
+    display:block;
+    text-decoration:none;
+    decoration:none;
+  }
+  .c-div{
+    margin-top:-1em;
+  }
+</style>
 <div id="wrapper">
   <!-- Sidebar -->
   <ul
   class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion sticky-top fixed-left"
-    id="accordionSidebar sticky-sidebar"
   >
     <!-- Sidebar - Brand -->
     <a
@@ -42,19 +71,17 @@
     
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-          aria-expanded="true" aria-controls="collapseTwo">
+      <button class="nav-link fbut" onclick="display()">
           <i class="fas fa-fw fa-cog"></i>
           <span>Create account</span>
-      </a>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Select account type:</h6>
-              <a class="collapse-item" href="createAcc">Voter</a>
-              <a class="collapse-item" href="createRep">Representative</a>
-              <a class="collapse-item" href="createFaci">Facilitator</a>
-          </div>
-      </div>
+    </button>
+          <ul id="divider" class="c-div" style="display:none;transition: display 1s ease-in-out;">
+              <li>Select account type:</li>
+              <li><a class="c-item" href="createAcc">Voter</a></li>
+              <li><a class="c-item" href="createRep">Representative</a></li>
+              <li><a class="c-item" href="createFaci">Facilitator</a></li>
+          </ul>
+      
   </li>
 
     <li class="nav-item">
@@ -196,3 +223,16 @@
           </li>
         </ul>
       </nav>
+<script>
+  function display(){
+   var divide=document.getElementById('divider')
+   if (divide.style.display=='none'){
+     divide.style.display='block';
+     divide.style.height="100%";
+   }
+   else{
+    divide.style.display='none';
+    divide.style.height="0%";
+   }
+  }
+</script>
