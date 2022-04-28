@@ -122,3 +122,24 @@ def markvotedview(request):
     
     context = {'user': user, 'info': info}
     return render(request, "markvoted.html", context)
+def createFaciview(request,*args,**kwargs):
+    user=request.user
+    if not user.is_authenticated:
+        return redirect('Home')
+    name=Voter.objects.get(user=user)
+    full_name=user.first_name+" "+user.last_name
+    return render(request,"createFaci.html",{'name':full_name})
+def createRepview(request,*args,**kwargs):
+    full_name=''
+    user=request.user
+    if not user.is_authenticated:
+        return redirect('Home')
+    full_name=user.first_name+" "+user.last_name
+    return render(request,"createRep.html",{'name':full_name})
+def createAdminview(request,*args,**kwargs):
+    full_name=''
+    user=request.user
+    if not user.is_authenticated:
+        return redirect('Home')
+    full_name=user.first_name+" "+user.last_name
+    return render(request,"createAdmin.html",{'name':full_name})
