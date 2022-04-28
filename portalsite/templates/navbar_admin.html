@@ -39,20 +39,23 @@
 
     <!-- Functions: only visible when logged in -->
     <div class="sidebar-heading">Functions</div>
-
+    
+    <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-      <a class="nav-link" href="createAcc">
-        <i class="fas fa-fw fa-calendar"></i>
-        <span>Create account</span></a
-      >
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" href="createFaci">
-        <i class="fas fa-fw fa-calendar"></i>
-        <span>Create facilitator</span></a
-      >
-    </li>
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+          aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Create account</span>
+      </a>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Select account type:</h6>
+              <a class="collapse-item" href="createAcc">Voter</a>
+              <a class="collapse-item" href="createRep">Representative</a>
+              <a class="collapse-item" href="createFaci">Facilitator</a>
+          </div>
+      </div>
+  </li>
 
     <li class="nav-item">
       <a class="nav-link" href="charts.html">
