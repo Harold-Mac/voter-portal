@@ -40,6 +40,7 @@
                   type="text"
                   name='first_name'
                   class="form-control form-control-user"
+                  onkeyup="autofillUser()"
                 />
               </div>
               <div class="mb-3">
@@ -50,7 +51,8 @@
                   type="text"
                   class="form-control"
                   id="InputMidName1"
-                  onchange="autofillUser()"
+                  name='MiddleName'
+                  onkeyup="autofillUser()"
                 />
               </div>
               <div class="mb-3">
@@ -61,6 +63,7 @@
                   type="text"
                   name='last_name'
                   class="form-control form-control-user"
+                  onkeyup="autofillUser()"
                 />
               </div>
               <!-- End of Name -->
@@ -75,6 +78,7 @@
                   type="text"
                   class="form-control"
                   id="exampleInputStreet1"
+                  name="street"
                 />
               </div>
               <div class="mb-3">
@@ -85,6 +89,7 @@
                   type="text"
                   class="form-control"
                   id="exampleInputBarangay1"
+                  name="Barangay"
                 />
               </div>
               <div class="mb-3">
@@ -95,6 +100,7 @@
                   type="text"
                   class="form-control"
                   id="exampleInputMunicipalityCity1"
+                  name="Municipality"
                 />
               </div>
               <div class="mb-4">
@@ -105,6 +111,7 @@
                   type="text"
                   class="form-control"
                   id="exampleInputProvince1"
+                  name="province"
                 />
               </div>
             
@@ -219,7 +226,7 @@
     var ln = document.getElementById('InputlnName1').value;
 
     let user = fn.charAt(0)+mn.charAt(0)+ln;
-    document.getElementById('AutoUsername1') = toLowerCase(user);
+    document.getElementById('AutoUsername1').value = toLowerCase(user);
   }
 
 </script>

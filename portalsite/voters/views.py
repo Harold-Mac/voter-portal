@@ -57,12 +57,20 @@ def createacc_view(request,*args,**kwargs):
 
     User = request.user
     form = CreateUserForm()
-
     if request.method == 'POST':
         try:
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                form.save()
+                p=request.POST
+                print(p)
+                address="{}, {}, {}, {}".format(p['street'],p['Barangay'],p['Municipality'],p['province'])
+                new_user=form.save()
+                v=Voter(user=new_user,mName=p['MiddleName'],pNum='1234abc',Add=address,contact='09234566789')
+                try:
+                    v.save()
+                except Exception:
+                    messages.warning(request,"Invalid Registration.")
+                    return redirect("creation")
                 messages.success(request,"Account Created!")
                 return redirect("creation")
             else:

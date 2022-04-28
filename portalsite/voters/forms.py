@@ -19,7 +19,7 @@ class CreateUserForm(UserCreationForm):
 		user = super(UserCreationForm, self).save(commit=False)
 		user.set_password(self.cleaned_data["password1"])
 		user.username = '{}.{}'.format(self.cleaned_data['first_name'].replace(" ", "").lower(),self.cleaned_data['last_name'].replace(" ", "").lower())
-
+		user.is_voter=True
 		if commit:
 			user.save()
 		return user
