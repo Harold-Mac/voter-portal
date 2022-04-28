@@ -89,10 +89,17 @@ def login_view(request,*args,**kwargs):
         password=request.POST['password']
         print(username,password)
         try:
-            user=User.objects.get(username=username)
-            if user is not None and (check_password(password, user.password) or password==user.password):
-                print("ok")
-                login(request,user)
+            #user=User.objects.get(username=username)
+            #if user is not None and (check_password(password, user.password) or password==user.password):
+                #print("ok")
+                #login(request,user)
+                #return redirect("Home")
+            #else:
+                #messages.success(request,"Invalid Credentials")
+                #return redirect("login")
+            user=authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
                 return redirect("Home")
             else:
                 messages.success(request,"Invalid Credentials")

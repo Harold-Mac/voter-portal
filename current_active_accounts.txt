@@ -1,18 +1,18 @@
 Voters
 
-javidad1, teks123
+javidad1, teks1234
 jdc123, cs192hart
 
 Admin
 
-admin, admin
+admin, word1234
 
 
 superuser
 user, 1234
 
 faci
-faci1, faciako
+faci1, faciako4
 
 rep
-rep1,repako
+rep1,repreako
