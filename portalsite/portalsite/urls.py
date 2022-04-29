@@ -37,6 +37,6 @@ urlpatterns = [
     path("test",testview,name='test'),
     path("markvoted/",markvotedview,name='markvoted'),
     path("createFaci",createFaciview,name="createFaci"),
-    path("createAdmin",createAdminview,name="createFaci"),
-    path("createRep",createRepview,name="createFaci"),
+    path("createAdmin",createAdminview,name="createAdmin"),
+    path("createRep",createRepview,name="createRep"),
 ]

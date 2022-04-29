@@ -23,3 +23,21 @@ class CreateUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+	def saverep(self, commit=True):
+		user = super(UserCreationForm, self).save(commit=False)
+		user.set_password(self.cleaned_data["password1"])
+		user.username = '{}.{}'.format(self.cleaned_data['first_name'].replace(" ", "").lower(),self.cleaned_data['last_name'].replace(" ", "").lower())
+		user.is_rep=True
+		if commit:
+			user.save()
+		return user
+
+	def savefaci(self, commit=True):
+		user = super(UserCreationForm, self).save(commit=False)
+		user.set_password(self.cleaned_data["password1"])
+		user.username = '{}.{}'.format(self.cleaned_data['first_name'].replace(" ", "").lower(),self.cleaned_data['last_name'].replace(" ", "").lower())
+		user.is_faci=True
+		if commit:
+			user.save()
+		return user

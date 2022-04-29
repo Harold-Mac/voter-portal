@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.shortcuts import render,redirect 
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import check_password
-from .models import Precinct, User,Voter,Admin,Repre
+from .models import Precinct, User,Voter,Admin,Repre, Faci
 from .forms import CreateUserForm
 from django.contrib import messages
 # Create your views here.
@@ -131,18 +131,60 @@ def markvotedview(request):
     context = {'user': user, 'info': info}
     return render(request, "markvoted.html", context)
 def createFaciview(request,*args,**kwargs):
-    user=request.user
-    if not user.is_authenticated:
-        return redirect('Home')
-    full_name=user.first_name+" "+user.last_name
-    return render(request,"createFaci.html",{'name':full_name})
+    User = request.user
+    form = CreateUserForm()
+    if request.method == 'POST':
+        try:
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                s=request.POST
+                print(s)
+                address="{}, {}, {}, {}".format(s['street'],s['Barangay'],s['Municipality'],s['province'])
+                new_user=form.savefaci()
+                f=Faci(user=new_user, mName=s['MiddleName'], Add=address, pNum=s['pNum'])
+                try:
+                    f.save()
+                except Exception:
+                    messages.warning(request,"Invalid Registration.")
+                    return redirect("createFaci")
+                messages.success(request,"Account Created!")
+                return redirect("createFaci")
+            else:
+                messages.warning(request,"Invalid Registration.")
+                return redirect("createFaci")
+        except IntegrityError:
+            messages.warning(request,"Invalid Registration.")
+            return redirect("createFaci")
+    else:
+        return render(request,"createFaci.html", {'form':form})
 def createRepview(request,*args,**kwargs):
-    full_name=''
-    user=request.user
-    if not user.is_authenticated:
-        return redirect('Home')
-    full_name=user.first_name+" "+user.last_name
-    return render(request,"createRep.html",{'name':full_name})
+    User = request.user
+    form = CreateUserForm()
+    if request.method == 'POST':
+        try:
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                q=request.POST
+                print(q)
+                address="{}, {}, {}, {}".format(q['street'],q['Barangay'],q['Municipality'],q['province'])
+                new_user=form.saverep()
+                r=Repre(user=new_user, mName=q['MiddleName'], vFname=q['first_name'], vLname=q['last_name'], Add=address, pNum='1234abc', contact='09234566789')
+                try:
+                    r.save()
+                except Exception:
+                    messages.warning(request,"Invalid Registration.")
+                    return redirect("createRep")
+                messages.success(request,"Account Created!")
+                return redirect("createRep")
+            else:
+                messages.warning(request,"Invalid Registration.")
+                return redirect("createRep")
+        except IntegrityError:
+            messages.warning(request,"Invalid Registration.")
+            return redirect("createRep")
+    else:
+        return render(request,"createRep.html", {'form':form})
+
 def createAdminview(request,*args,**kwargs):
     full_name=''
     user=request.user
