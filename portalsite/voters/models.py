@@ -19,6 +19,9 @@ class Voter(models.Model):
     contact=models.CharField(max_length=11, default='09000000000', validators=[RegexValidator(r'^[0-9]{11}$')])
 class Faci(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
+    mName=models.CharField(max_length=100, default='')
+    pNum=models.CharField(max_length=100, default='')
+    Add=models.CharField(max_length=300, default='')
 class Precinct(models.Model):
     pNum=models.CharField(max_length=100,unique=True)
     pAdd=models.CharField(max_length=300)

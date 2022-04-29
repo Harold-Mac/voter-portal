@@ -2,168 +2,222 @@
 {%load static %}
 {%block content %}
 <div class="container">
-    <div class="card shadow-lg my-5">
-      <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
-        <div class="row border">
-          <div class="container text-center mt-3">
-            <img
-              src="{%static 'img/logo_dark.png'%}"
-              alt="Logo of Voter's Portal"
-              width="25%"
-            />
-            <h1 class="h2 pt-3 text-gray-900 text-center">Create a Representative Account</h1>
-          </div>
-          <div class="col-lg-11 px-5">
-          {% if messages %}
-            {% for m in messages %}
-              <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>{{m}}</strong> 
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-            {% endfor %}
-          {% endif %}
-          </div>
-          <form method='POST' action="">
-            {% csrf_token %}
-            <!-- Left Side -->
-            <div class="col-lg-12 px-5">
-              <!-- Name -->
-              
-                <div class="mb-3">
-                  <label for="exampleInputfirstName1" class="form-label"
-                    >First Name</label
-                  >
-                  <input
-                    type="text"
-                    name='first_name'
-                    class="form-control form-control-user"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputMidName1" class="form-label"
-                    >Middle Name</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="InputMidName1"
-                    onchange="autofillUser()"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputlastName1" class="form-label"
-                    >Last Name</label
-                  >
-                  <input
-                    type="text"
-                    name='last_name'
-                    class="form-control form-control-user"
-                  />
-                </div>
-                <!-- End of Name -->
-  
-                <div class="mb-4 pb-4">
-                    <label for="exampleInputPrecinctNumber1" class="form-label"
-                      >Precinct Number</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="exampleInputPrecinctNumber1"
-                      readonly
-                    />
-                </div>
-
-                </div>
-              
-              <!-- End of Address -->
-            </div>
-            <!-- End of Left Side-->
-  
-            <!-- Right Side -->
-            <div class="col-lg-12 px-5">
-                <div style="height: 14px"></div>
-                <!-- Account Details -->
-                <h3 class="mt-4 pt-5 fst-italic">Account Details</h3>
-                <div class="mb-3">
-                  <label for="exampleAutoUsername1" class="form-label"
-                    >Username</label
-                  >
-                  <input 
-                    type="text"
-                    class="form-control"
-                    id="AutoUsername1"
-                    readonly
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label"
-                    >Email</label
-                  >
-                  <input
-                    type="email"
-                    name='email'
-                    class="form-control form-control-user"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label"
-                    >Password</label
-                  >
-                  <input
-                    type="password"
-                    name='password1'
-                    class="form-control form-control-user"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputRetypePassword1" class="form-label"
-                    >Retype Password</label
-                  >
-                  <input
-                    type="password"
-                    name='password2'
-                    class="form-control form-control-user"
-                  />
-                </div>
-              
-              <!-- End of Account Details -->
-            </div>
-            <!-- End of Right Side-->
-            <div class="container py-4 text-center">
-              <div class="mb-3 form-check">
-                <input
-                  type="checkbox"
-                  name="check"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label class="form-check-label" for="exampleCheck1"
-                  >I agree that all information entered are true and anything
-                  entered can be used against me for anything related to the
-                  account.</label
-                >
-              </div>
-              <input type="submit" class="btn btn-primary" name="Create User">
-            </div>
-          </form>
+  <div class="card shadow-lg my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row border">
+        <div class="container text-center mt-3">
+          <img
+            src="{%static 'img/logo_dark.png'%}"
+            alt="Logo of Voter's Portal"
+            width="25%"
+          />
+          <h1 class="h2 pt-3 text-gray-900 text-center">Create a Facilitator Account</h1>
         </div>
+        <div class="col-lg-11 px-5">
+        {% if messages %}
+          {% for m in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>{{m}}</strong> 
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        </div>
+        <form method='POST' action="">
+          {% csrf_token %}
+          <!-- Left Side -->
+          <div class="col-lg-12 px-5">
+            <!-- Name -->
+            
+              <div class="mb-3">
+                <label for="exampleInputfirstName1" class="form-label"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  name='first_name'
+                  class="form-control form-control-user"
+                  onkeyup="autofillUser()"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputMidName1" class="form-label"
+                  >Middle Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="InputMidName1"
+                  name='MiddleName'
+                  onkeyup="autofillUser()"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputlastName1" class="form-label"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  name='last_name'
+                  class="form-control form-control-user"
+                  onkeyup="autofillUser()"
+                />
+              </div>
+              <!-- End of Name -->
+
+              <!-- Address -->
+              <h3 class="mt-5 fst-italic">Address</h3>
+              <div class="mb-3">
+                <label for="exampleInputStreet1" class="form-label"
+                  >Street</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputStreet1"
+                  name="street"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputBarangay1" class="form-label"
+                  >Barangay</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputBarangay1"
+                  name="Barangay"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputMunicipalityCity1" class="form-label"
+                  >Municipality/City</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputMunicipalityCity1"
+                  name="Municipality"
+                />
+              </div>
+              <div class="mb-4">
+                <label for="exampleInputProvince1" class="form-label"
+                  >Province</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputProvince1"
+                  name="province"
+                />
+              </div>
+            
+            <!-- End of Address -->
+          </div>
+          <!-- End of Left Side-->
+
+          <!-- Right Side -->
+          <div class="col-lg-12 px-5">
+            <!-- Voter's ID & Precinct Number -->
+            <h3 class="mt-5 fst-italic">Facilitator's Information</h3>
+            
+              <div class="mb-4 pb-4">
+                <label for="exampleInputPrecinctNumber1" class="form-label"
+                  >Precinct Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputPrecinctNumber1"
+                  name="pNum"
+                />
+              </div>
+              <!-- End of Voter's ID & Precinct Number -->
+
+              <div style="height: 14px"></div>
+              <!-- Account Details -->
+              <h3 class="mt-4 pt-5 fst-italic">Account Details</h3>
+              <div class="mb-3">
+                <label for="exampleAutoUsername1" class="form-label"
+                  >Username</label
+                >
+                <input 
+                  type="text"
+                  class="form-control"
+                  id="AutoUsername1"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  name='email'
+                  class="form-control form-control-user"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  name='password1'
+                  class="form-control form-control-user"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputRetypePassword1" class="form-label"
+                  >Retype Password</label
+                >
+                <input
+                  type="password"
+                  name='password2'
+                  class="form-control form-control-user"
+                />
+              </div>
+            
+            <!-- End of Account Details -->
+          </div>
+          <!-- End of Right Side-->
+          <div class="container py-4 text-center">
+            <div class="mb-3 form-check">
+              <input
+                type="checkbox"
+                name="check"
+                class="form-check-input"
+                id="exampleCheck1"
+              />
+              <label class="form-check-label" for="exampleCheck1"
+                >I agree that all information entered are true and anything
+                entered can be used against me for anything related to the
+                account</label
+              >
+            </div>
+            <input type="submit" class="btn btn-primary" name="Create User">
+          </div>
+        </form>
       </div>
     </div>
-  
-  <!-- createAcc autofill for Username -->
-  <script>
-    function autofillUser(){
-      var fn = document.getElementById('InputfirstName1').value;
-      var mn = document.getElementById('InputMidName1').value;
-      var ln = document.getElementById('InputlnName1').value;
-  
-      let user = fn.charAt(0)+mn.charAt(0)+ln;
-      document.getElementById('AutoUsername1') = toLowerCase(user);
-    }
-  
-  </script>
-{%endblock%}
+  </div>
+</div>
+
+<!-- createAcc autofill for Username -->
+<script>
+  function autofillUser(){
+    var fn = document.getElementById('InputfirstName1').value;
+    var mn = document.getElementById('InputMidName1').value;
+    var ln = document.getElementById('InputlnName1').value;
+
+    let user = fn.charAt(0)+mn.charAt(0)+ln;
+    document.getElementById('AutoUsername1').value = toLowerCase(user);
+  }
+
+</script>
+
+{% endblock %}
