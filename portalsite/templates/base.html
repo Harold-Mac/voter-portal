@@ -63,7 +63,7 @@
         {%if user.is_voter or user.is_rep%}
           {%include 'navbar_loggedin.html'%}
         {%elif user.is_faci%}
-          {%include 'navbar_loggedin.html'%}
+          {%include 'navbar_faci.html'%}
         {%else%}
         {%include 'navbar_admin.html'%}
         {%endif%}

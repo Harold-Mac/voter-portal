@@ -129,7 +129,7 @@ def markvotedview(request):
     info=Voter.objects.get(user=user)
     
     context = {'user': user, 'info': info}
-    return render(request, "markvoted.html", context)
+    return render(request, "markVoted.html", context)
 def createFaciview(request,*args,**kwargs):
     User = request.user
     form = CreateUserForm()
@@ -192,3 +192,23 @@ def createAdminview(request,*args,**kwargs):
         return redirect('Home')
     full_name=user.first_name+" "+user.last_name
     return render(request,"createAdmin.html",{'name':full_name})
+
+def faciVerifyview(request,*args,**kwargs):
+    full_name=''
+    user=request.user
+    if not user.is_authenticated:
+        return redirect('Home')
+    full_name=user.first_name+" "+user.last_name
+    return render(request,"faciVerify.html",{'name':full_name})
+
+def notRegisteredview(request,*args,**kwargs):
+    full_name=''
+    return render(request,"notRegistered.html",{'name':full_name})
+
+def repSchedview(request,*args,**kwargs):
+    full_name=''
+    user=request.user
+    if not user.is_authenticated:
+        return redirect('Home')
+    full_name=user.first_name+" "+user.last_name
+    return render(request,"repSched.html",{'name':full_name})
