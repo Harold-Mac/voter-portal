@@ -18,7 +18,7 @@ class Voter(models.Model):
     Add=models.CharField(max_length=300)
     has_voted=models.BooleanField('Voted',default=False)
     scheduled=models.BooleanField("scheduled",default=False)
-    scheduleddate=models.DateField("scheduledate", default=date.today)
+    scheduleddate=models.CharField("scheduledate", max_length=100, default="5:00 AM - 5:00 AM")
     contact=models.CharField(max_length=11, default='09000000000', validators=[RegexValidator(r'^[0-9]{11}$')])
 class Faci(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
@@ -39,5 +39,5 @@ class Repre(models.Model):
     Add=models.CharField(max_length=300)
     has_voted=models.BooleanField('Voted',default=False)
     scheduled=models.BooleanField("scheduled",default=False)
-    scheduleddate=models.DateField("scheduledate", default=date.today)
+    scheduleddate=models.CharField("scheduledate", max_length=100, default="5:00 AM - 5:00 AM")
     contact=models.CharField(max_length=11, default='09000000000', validators=[RegexValidator(r'^[0-9]{11}$')])
