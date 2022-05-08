@@ -47,6 +47,10 @@ def precinct_view(request,*args,**kwargs):
     full_name=''
     if not user.is_authenticated:
         return redirect('Home')
+    print("rep:",user.is_rep)
+    print("faci:",user.is_faci)
+    print("voter", user.is_voter)
+    print("admin:",user.is_admin)
     name=Voter.objects.get(user=user)
     full_name=name.user.first_name+" "+name.user.last_name
     return render(request,"precinct.html",{'name':full_name,"top5":["8:30 AM - 9:00 AM (30%)","7:30 AM - 8:00 AM(20%)","2:30 PM - 3:00 PM(15%)","8:00 AM - 8:30 AM(10%)","1:00 PM - 1:30 PM(5%)"],'v':a,'nv':b})
