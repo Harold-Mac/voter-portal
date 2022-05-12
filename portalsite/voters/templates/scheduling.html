@@ -1,6 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<style>
+  .sched{
+    background:#343a40;
+    color:#e5e6f6 ;
+    width:20em;
+    text-align:center;
+    height:3em;
+    border-radius:2em;
+  }
+select option:hover {
+  background:#dee2e6;
+    box-shadow: 0 0 10px 100px #000 inset;
+}
+.hide{
+  display:none;
+}
+</style>
 
         <div
             class="container-fluid text-center bg-light"
@@ -10,27 +27,49 @@
                 <h1>Please select a time slot</h1>
                 <p>To facilitate a smoother voting experience, you are encouraged to enter your preferred time to vote below. Press submit when you wish to confirm your time slot.</p>
 
-                <div class="dropdown mb-4">
-                  <button class="btn btn-secondary dropdown-toggle" type="button"
-                      id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false">
-                      Dropdown
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" href="#">Timeslot 1</a>
-                      <a class="dropdown-item" href="#">Timeslot 2</a>
-                      <a class="dropdown-item" href="#">Timeslot 3</a>
-                  </div>
-                </div>
-                <div class="my-1"></div>
-                <a href="Home" class="btn btn-success btn-icon-split">
+                  <select name="selectedSched" class="sched" id="ddown" onchange="chkslct()">
+                    <option value="0">-Select Schedule-</option>
+                    <option value="6:00 AM - 6:30 AM">6:00 AM - 6:30 AM</option>
+                    <option value="6:30 AM - 7:00 AM">6:30 AM - 7:00 AM</option>                    
+                    <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
+                    <option value="7:30 AM - 8:00 AM">7:30 AM - 8:00 AM</option>
+                    <option value="8:00 AM - 8:30 AM">8:00 AM - 8:30 AM</option>
+                    <option value="8:30 AM - 9:00 AM">8:30 AM - 9:00 AM</option>
+                    <option value="9:00 AM - 9:30 AM">9:00 AM - 9:30 AM</option>
+                    <option value="9:30 AM - 10:00 AM">9:30 AM - 10:00 AM</option>
+                    <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
+                    <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+                    <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>
+                    <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
+                    <option value="12:00 PM - 12:30 PM">12:00 PM - 12:30 PM</option>
+                    <option value="12:30 PM - 1:00 PM">12:30 PM - 1:00 PM</option>
+                    <option value="1:00 PM - 1:30 PM">1:00 PM - 1:30 PM</option>
+                    <option value="1:30 PM - 2:00 PM">1:30 PM - 2:00 PM</option>
+                    <option value="2:00 PM - 2:30 PM">2:00 PM - 2:30 PM</option>
+                    <option value="2:30 PM - 3:00 PM">2:30 PM - 3:00 PM</option>
+                    <option value="3:00 PM - 3:30 PM">3:00 PM - 3:30 PM</option>
+                    <option value="3:30 PM - 4:00 PM">3:30 PM - 4:00 PM</option>
+                    <option value="4:00 PM - 4:30 PM">4:00 PM - 4:30 PM</option>
+                    <option value="4:30 PM - 5:00 PM">4:30 PM - 5:00 PM</option>
+                    <option value="5:00 PM - 5:30 PM">5:00 PM - 5:30 PM</option>
+                    <option value="5:30 PM - 6:00 PM">5:30 PM - 6:00 PM</option>
+                    <option value="6:00 PM - 6:30 PM">6:00 PM - 6:30 PM</option>
+                    <option value="6:30 PM - 7:00 PM">6:30 PM - 7:00 PM</option>
+                  </select>
+                  
+                <div id="demo">....</div>
+                <div id="sub"class="my-1 hide">
+
+                <a href="Home"  class="btn btn-success btn-icon-split " >
                 <span class="icon text-white-50">
                   <i class="fas fa-check"></i>
                 </span>
                 <span class="text">Confirm time slot</span>
                 </a>
               </div>
+              </div>
             </div>
+
             <div class="my-3"></div>
             <div class="card shadow mb-4">
               <div class="card-header py-3">
@@ -44,6 +83,24 @@
               </div>
           </div>
           </div>
+      <script>
+        function chkslct(){
+          var a=document.getElementById("ddown").value;
+
+          if (a=="0"){
+            if (document.getElementById("sub").classList.contains("hide")){
+            }
+            else{
+              document.getElementById("sub").classList.add("hide");
+            }
+          }
+          else{
+            if (document.getElementById("sub").classList.contains("hide")){
+              document.getElementById("sub").classList.remove("hide");
+            }
+          }
+        }
+      </script>
     <!-- Page level plugins -->
     <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
 

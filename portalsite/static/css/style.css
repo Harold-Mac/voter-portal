@@ -243,3 +243,7 @@ text-align: left;
 #selection{
   width:300px;
 }
+.sched{
+  background: #464752;
+  color:white;
+}
