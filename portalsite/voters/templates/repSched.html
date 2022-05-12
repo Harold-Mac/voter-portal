@@ -1,78 +1,81 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <style>
-  .sched{
+  select{
     background:#343a40;
     color:#e5e6f6 ;
-    width:20em;
     text-align:center;
+  }
+  .sched{
+    width:20em;
     height:3em;
     border-radius:2em;
   }
-select option:hover {
-  background:#dee2e6;
-    box-shadow: 0 0 10px 100px #000 inset;
-}
+  .Voterselection{
+    width:15em;
+    height:2.5em;
+  }
 .hide{
   display:none;
 }
 </style>
 <div class="container">
   <h1 class="text-center">Schedule Voter</h1>
-
-  <form class="text-center col-md-5 mx-auto my-5">
-    <div class="form-group">
-      <label for="voterID">Voter's ID</label>
-      <input type="text" class="form-control" placeholder="Enter VID" />
-    </div>
-    <div class="text-center">
-      <button type="submit" class="btn btn-primary">Find Voter</button>
-    </div>
-  </form>
-
+  <center>
+  <select id="votername" class="Voterselection">
+    <option value="0">--Select Voter--</option>
+    {% for i in voters%}
+      <option value={{i}}>{{i}}</option>
+    {%endfor%}
+  </select>
+</center>
   <div class="text-center">
     <div class="row">
         <div class="col">
-          <p>Please select a time slot.</p>
-
-          <select name="selectedSched" class="sched" id="ddown" onchange="chkslct()">
-            <option value="0">-Select Schedule-</option>
-            <option value="6:00 AM - 6:30 AM">6:00 AM - 6:30 AM</option>
-            <option value="6:30 AM - 7:00 AM">6:30 AM - 7:00 AM</option>                    
-            <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
-            <option value="7:30 AM - 8:00 AM">7:30 AM - 8:00 AM</option>
-            <option value="8:00 AM - 8:30 AM">8:00 AM - 8:30 AM</option>
-            <option value="8:30 AM - 9:00 AM">8:30 AM - 9:00 AM</option>
-            <option value="9:00 AM - 9:30 AM">9:00 AM - 9:30 AM</option>
-            <option value="9:30 AM - 10:00 AM">9:30 AM - 10:00 AM</option>
-            <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
-            <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
-            <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>
-            <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
-            <option value="12:00 PM - 12:30 PM">12:00 PM - 12:30 PM</option>
-            <option value="12:30 PM - 1:00 PM">12:30 PM - 1:00 PM</option>
-            <option value="1:00 PM - 1:30 PM">1:00 PM - 1:30 PM</option>
-            <option value="1:30 PM - 2:00 PM">1:30 PM - 2:00 PM</option>
-            <option value="2:00 PM - 2:30 PM">2:00 PM - 2:30 PM</option>
-            <option value="2:30 PM - 3:00 PM">2:30 PM - 3:00 PM</option>
-            <option value="3:00 PM - 3:30 PM">3:00 PM - 3:30 PM</option>
-            <option value="3:30 PM - 4:00 PM">3:30 PM - 4:00 PM</option>
-            <option value="4:00 PM - 4:30 PM">4:00 PM - 4:30 PM</option>
-            <option value="4:30 PM - 5:00 PM">4:30 PM - 5:00 PM</option>
-            <option value="5:00 PM - 5:30 PM">5:00 PM - 5:30 PM</option>
-            <option value="5:30 PM - 6:00 PM">5:30 PM - 6:00 PM</option>
-            <option value="6:00 PM - 6:30 PM">6:00 PM - 6:30 PM</option>
-            <option value="6:30 PM - 7:00 PM">6:30 PM - 7:00 PM</option>
-          </select>
+          {%if voters%}
+            <p>Please select a time slot.</p>
+            <select name="selectedSched" class="sched" id="ddown" onchange="chkslct()">
+              <option value="0">-Select Schedule-</option>
+              <option value="6:00 AM - 6:30 AM">6:00 AM - 6:30 AM</option>
+              <option value="6:30 AM - 7:00 AM">6:30 AM - 7:00 AM</option>                    
+              <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
+              <option value="7:30 AM - 8:00 AM">7:30 AM - 8:00 AM</option>
+              <option value="8:00 AM - 8:30 AM">8:00 AM - 8:30 AM</option>
+              <option value="8:30 AM - 9:00 AM">8:30 AM - 9:00 AM</option>
+              <option value="9:00 AM - 9:30 AM">9:00 AM - 9:30 AM</option>
+              <option value="9:30 AM - 10:00 AM">9:30 AM - 10:00 AM</option>
+              <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
+              <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+              <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>
+              <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
+              <option value="12:00 PM - 12:30 PM">12:00 PM - 12:30 PM</option>
+              <option value="12:30 PM - 1:00 PM">12:30 PM - 1:00 PM</option>
+              <option value="1:00 PM - 1:30 PM">1:00 PM - 1:30 PM</option>
+              <option value="1:30 PM - 2:00 PM">1:30 PM - 2:00 PM</option>
+              <option value="2:00 PM - 2:30 PM">2:00 PM - 2:30 PM</option>
+              <option value="2:30 PM - 3:00 PM">2:30 PM - 3:00 PM</option>
+              <option value="3:00 PM - 3:30 PM">3:00 PM - 3:30 PM</option>
+              <option value="3:30 PM - 4:00 PM">3:30 PM - 4:00 PM</option>
+              <option value="4:00 PM - 4:30 PM">4:00 PM - 4:30 PM</option>
+              <option value="4:30 PM - 5:00 PM">4:30 PM - 5:00 PM</option>
+              <option value="5:00 PM - 5:30 PM">5:00 PM - 5:30 PM</option>
+              <option value="5:30 PM - 6:00 PM">5:30 PM - 6:00 PM</option>
+              <option value="6:00 PM - 6:30 PM">6:00 PM - 6:30 PM</option>
+              <option value="6:30 PM - 7:00 PM">6:30 PM - 7:00 PM</option>
+            </select>
+            
+            <div id="demo">....</div>
+            <div id="sub"class="my-1 hide">
+              <a href="Home"  class="btn btn-success btn-icon-split " >
+                <span class="icon text-white-50">
+                  <i class="fas fa-check"></i>
+                </span>
+                <span class="text">Confirm time slot</span>
+              </a>
+            </div>
+          {%else%}
+            <p> Either account is already scheduled or is in the process of scheduling</p>
+          {%endif%}
           
-          <div id="demo">....</div>
-          <div id="sub"class="my-1 hide">
-            <a href="Home"  class="btn btn-success btn-icon-split " >
-              <span class="icon text-white-50">
-                <i class="fas fa-check"></i>
-              </span>
-              <span class="text">Confirm time slot</span>
-            </a>
-          </div>
           <script>
             function chkslct(){
               var a=document.getElementById("ddown").value;
