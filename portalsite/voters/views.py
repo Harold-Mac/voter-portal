@@ -86,8 +86,12 @@ def createacc_view(request,*args,**kwargs):
         return render(request,"createaccount.html", {'form':form})
 
 def scheduling_view(request,*args,**kwargs):
-    my_context={"scheds":["8:30 AM - 9:00 AM","7:30 AM - 8:00 AM","2:30 PM - 3:00 PM","8:00 AM - 8:30 AM","1:00 PM - 1:30 PM"],"traffic":[10,23,5,6,12]}
-    return render(request,"scheduling.html",my_context)
+    prec=Voter.objects.get(user=request.user).pNum
+    reprevoters=Repre.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    print(reprevoters)
+    vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    print(vvoters)
+    return render(request,"scheduling.html",{})
 def pwrecovery_view(request,*args,**kwargs):
     return render(request,"pwrecovery.html",{})
 
