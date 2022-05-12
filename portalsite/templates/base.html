@@ -61,8 +61,10 @@
   <body>
       <!-- navbar -->
       {% if user.is_authenticated %}
-        {%if user.is_voter or user.is_rep%}
+        {%if user.is_voter%}
           {%include 'navbar_loggedin.html'%}
+        {%elif user.is_rep%}
+        {%include 'navbar_rep.html'%}
         {%elif user.is_faci%}
           {%include 'navbar_faci.html'%}
         {%else%}
