@@ -68,13 +68,13 @@ def createacc_view(request,*args,**kwargs):
                 print(p)
                 address="{}, {}, {}, {}".format(p['street'],p['Barangay'],p['Municipality'],p['province'])
                 new_user=form.save()
-                v=Voter(user=new_user,mName=p['MiddleName'],pNum='1234abc',Add=address,contact='09234566789')
+                v=Voter(user=new_user,mName=p['MiddleName'],pNum='1234abc', vId= '7016-1234abc-125XYZ', Add=address,contact=p['contact'])
                 try:
                     v.save()
                 except Exception:
                     messages.warning(request,"Invalid Registration.")
                     return redirect("creation")
-                messages.success(request,"Account Created!")
+                messages.success(request,"Account Created! Your username is "+p['first_name'].replace(" ", "").lower()+"."+p['last_name'].replace(" ", "").lower())
                 return redirect("creation")
             else:
                 messages.warning(request,"Invalid Registration.")
@@ -150,7 +150,7 @@ def createFaciview(request,*args,**kwargs):
                 except Exception:
                     messages.warning(request,"Invalid Registration.")
                     return redirect("createFaci")
-                messages.success(request,"Account Created!")
+                messages.success(request,"Account Created!  Your username is "+s['first_name'].replace(" ", "").lower()+"."+s['last_name'].replace(" ", "").lower())
                 return redirect("createFaci")
             else:
                 messages.warning(request,"Invalid Registration.")
@@ -171,13 +171,13 @@ def createRepview(request,*args,**kwargs):
                 print(q)
                 address="{}, {}, {}, {}".format(q['street'],q['Barangay'],q['Municipality'],q['province'])
                 new_user=form.saverep()
-                r=Repre(user=new_user, mName=q['MiddleName'], vFname=q['first_name'], vLname=q['last_name'], Add=address, pNum='1234abc', contact='09234566789')
+                r=Repre(user=new_user, mName=q['MiddleName'], vFname=q['first_name'], vLname=q['last_name'], Add=address, pNum='1234abc', vId= '7016-1234abc-125XYZ', contact=q['contact'])
                 try:
                     r.save()
                 except Exception:
                     messages.warning(request,"Invalid Registration.")
                     return redirect("createRep")
-                messages.success(request,"Account Created!")
+                messages.success(request,"Account Created! Your username is "+q['first_name'].replace(" ", "").lower()+"."+q['last_name'].replace(" ", "").lower())
                 return redirect("createRep")
             else:
                 messages.warning(request,"Invalid Registration.")
