@@ -2,6 +2,7 @@ from multiprocessing import context
 from random import randint
 from re import L
 import re
+from sched import scheduler
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.shortcuts import render,redirect 
@@ -14,9 +15,14 @@ from django.contrib import messages
 def home_view(request,*args,**kwargs):
     user=request.user
     full_name=''
+    is_scheduled=False
+    sched="Not Yet Scheduled"
     if user.is_authenticated:
         full_name=user.first_name+" "+user.last_name
-    return render(request,"base.html",{'user':user, 'name':full_name})
+        s=Voter.objects.get(user=user)
+        is_scheduled=s.scheduled
+        sched=s.scheduleddate
+    return render(request,"base.html",{'user':user, 'name':full_name,"sch":is_scheduled,"sched":sched})
 
 def profile_view(request,*args,**kwargs):
     user=request.user
@@ -47,10 +53,6 @@ def precinct_view(request,*args,**kwargs):
     full_name=''
     if not user.is_authenticated:
         return redirect('Home')
-    print("rep:",user.is_rep)
-    print("faci:",user.is_faci)
-    print("voter", user.is_voter)
-    print("admin:",user.is_admin)
     full_name=user.first_name+" "+user.last_name
     return render(request,"precinct.html",{'name':full_name,"top5":["8:30 AM - 9:00 AM (30%)","7:30 AM - 8:00 AM(20%)","2:30 PM - 3:00 PM(15%)","8:00 AM - 8:30 AM(10%)","1:00 PM - 1:30 PM(5%)"],'v':a,'nv':b})
 def redirectview(request,*args,**kwargs):
@@ -161,7 +163,7 @@ def createFaciview(request,*args,**kwargs):
                 print(s)
                 address="{}, {}, {}, {}".format(s['street'],s['Barangay'],s['Municipality'],s['province'])
                 new_user=form.savefaci()
-                f=Faci(user=new_user, mName=s['MiddleName'], Add=address, pNum=s['pNum'])
+                f=Facis(user=new_user, mName=s['MiddleName'], Add=address, pNum=s['pNum'])
                 try:
                     f.save()
                 except Exception:
@@ -216,13 +218,34 @@ def createAdminview(request,*args,**kwargs):
 def faciVerifyview(request,*args,**kwargs):
     full_name=''
     user=request.user
-    print(user)
     if not user.is_authenticated:
         return redirect('Home')
     full_name=user.first_name+" "+user.last_name
     pnum=Facis.objects.get(user=user).pNum
     print(pnum)
-    return render(request,"faciVerify.html",{'name':full_name})
+    if request.method=="POST":
+        req=request.POST["verify"]
+        pnum=Facis.objects.get(user=user).pNum
+        ck=User.objects.filter(username=req,is_voter=True)
+        print(ck)
+        if ck.count()>0: #from voter table
+            temp=ck[0]
+            obj=Voter.objects.get(user=temp)
+            obj.forscheduling=False
+            obj.scheduled=True
+            obj.save(update_fields=['forscheduling','scheduled'])
+            return redirect("faciVerify")
+        else:   #from repre
+            ck=Repre.objects.annotate(fullname='vFname'+"vLname")
+            o=ck.filter(fullname=user)
+            obj=o[0]
+            obj.forscheduling=False
+            obj.scheduled=True
+            obj.save
+    Reprevoters=Repre.objects.filter(pNum=pnum,forscheduling=True)
+    vvoters=Voter.objects.filter(pNum=pnum,forscheduling=True)
+    print
+    return render(request,"faciVerify.html",{'name':full_name,"rVoters":Reprevoters,"vVoters":vvoters})
 
 def notRegisteredview(request,*args,**kwargs):
     full_name=''
