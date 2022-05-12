@@ -18,7 +18,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import path
 from voters.views import createFaciview,createAdminview,createRepview, faciVerifyview, notRegisteredview, repSchedview,voterschedule
-from voters.views import home_view,precinct_view,redirectview,createacc_view,login_view,scheduling_view,pwrecovery_view,profile_view,clang_view,logout_acc, testview, markvotedview
+from voters.views import home_view,precinct_view,redirectview,createacc_view,login_view,scheduling_view,repOwnSched_view,pwrecovery_view,profile_view,clang_view,logout_acc, testview, markvotedview
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('Home',home_view,name="Home"),
@@ -40,5 +40,6 @@ urlpatterns = [
     path("faciVerify",faciVerifyview,name="faciVerify"),
     path("notRegistered",notRegisteredview,name="notRegistered"),
     path("repSched",repSchedview,name="repSched"),
+    path("repOwnSched",repOwnSched_view,name="repOwnSched"),
     path("voterSchedule",voterschedule,name="voterSched"),
 ]

@@ -22,16 +22,16 @@
                 <td class="text-gray-600 mb-0 text-right">Middle Name:</td>
                 <td class="text-gray-900 mb-0 text-left fw-bold">{{voter.mName}}</td>
                 <td class="text-gray-600 mb-0 text-right">Email:</td>
-                <td class="text-gray-900 mb-0 text-left fw-bold">{{user.email}}</td>
+                <td class="text-gray-900 mb-0 text-left fw-bold">{{voter.user.email}}</td>
               </tr>
               <tr>
                 <td class="text-gray-600 mb-0 text-right">Last Name:</td>
                 <td class="text-gray-900 mb-0 text-left fw-bold">
-                  {{voter.vFname}}
+                  {{voter.vLname}}
                 </td>
                 <td class="text-gray-600 mb-0 text-right">Contact Number:</td>
                 <td class="text-gray-900 mb-0 text-left fw-bold">
-                  {{info.contact}}
+                  {{voter.contact}}
                 </td>
                 <td><button type="submit" class="btn btn-lg btn-success"name="verify" value={{voter.id}}>Verify schedule</button></td>
               </tr>
