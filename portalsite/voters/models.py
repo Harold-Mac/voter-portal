@@ -21,7 +21,7 @@ class Voter(models.Model):
     scheduleddate=models.CharField("scheduledate", max_length=100, default="5:00 AM - 5:00 AM")
     contact=models.CharField(max_length=11, default='09000000000', validators=[RegexValidator(r'^[0-9]{11}$')])
     forscheduling=models.BooleanField('forscheduling',default=False)
-class Faci(models.Model):
+class Facis(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
     mName=models.CharField(max_length=100, default='')
     pNum=models.CharField(max_length=100, default='')

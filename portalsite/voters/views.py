@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.shortcuts import render,redirect 
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import check_password
-from .models import Precinct, User,Voter,Admin,Repre, Faci
+from .models import Precinct, User,Voter,Admin,Repre, Facis
 from .forms import CreateUserForm
 from django.contrib import messages
 # Create your views here.
@@ -216,9 +216,12 @@ def createAdminview(request,*args,**kwargs):
 def faciVerifyview(request,*args,**kwargs):
     full_name=''
     user=request.user
+    print(user)
     if not user.is_authenticated:
         return redirect('Home')
     full_name=user.first_name+" "+user.last_name
+    pnum=Facis.objects.get(user=user).pNum
+    print(pnum)
     return render(request,"faciVerify.html",{'name':full_name})
 
 def notRegisteredview(request,*args,**kwargs):
