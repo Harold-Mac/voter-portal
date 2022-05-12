@@ -48,14 +48,25 @@ def profile_view(request,*args,**kwargs):
     return render(request,"profile.html",{'user':user,'name':full_name, 'info':info})
 
 def precinct_view(request,*args,**kwargs):
-    a=randint(1,20)
-    b=randint(0,30)
+    
     user=request.user
     full_name=''
     if not user.is_authenticated:
         return redirect('Home')
+    if user.is_voter:
+        us=Voter.objects.get(user=user).pNum
+        vv=Voter.objects.filter(pNum=us).values("has_voted")
+        rp=Repre.objects.filter(pNum=us).values("has_voted")
+        print(vv,rp)
+    voted=0
+    for i in range(len(vv)):
+        if vv[i]["has_voted"]:
+            voted+=1
+    for i in range(len(rp)):
+        if rp[i]["has_voted"]:
+            voted+=1
     full_name=user.first_name+" "+user.last_name
-    return render(request,"precinct.html",{'name':full_name,"top5":["8:30 AM - 9:00 AM (30%)","7:30 AM - 8:00 AM(20%)","2:30 PM - 3:00 PM(15%)","8:00 AM - 8:30 AM(10%)","1:00 PM - 1:30 PM(5%)"],'v':a,'nv':b})
+    return render(request,"precinct.html",{'name':full_name,"top5":["8:30 AM - 9:00 AM (30%)","7:30 AM - 8:00 AM(20%)","2:30 PM - 3:00 PM(15%)","8:00 AM - 8:30 AM(10%)","1:00 PM - 1:30 PM(5%)"],'v':voted,'nv':len(vv)+len(rp)-voted})
 def redirectview(request,*args,**kwargs):
     r=redirect('Home')
     return r
