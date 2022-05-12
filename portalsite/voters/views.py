@@ -91,6 +91,8 @@ def scheduling_view(request,*args,**kwargs):
     print(reprevoters)
     vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
     print(vvoters)
+    for i in reprevoters:
+        print(i["scheduleddate"])
     return render(request,"scheduling.html",{})
 def pwrecovery_view(request,*args,**kwargs):
     return render(request,"pwrecovery.html",{})
