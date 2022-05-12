@@ -86,14 +86,18 @@ def createacc_view(request,*args,**kwargs):
         return render(request,"createaccount.html", {'form':form})
 
 def scheduling_view(request,*args,**kwargs):
+    schedules=["7:00 AM","7:30 AM", "8:00 AM","8:30 AM", "9:00 AM","9:30 AM", "10:00 AM","10:30 AM", "11:00 AM","11:30 AM", "12:00 PM","12:30 PM", "1:00 PM","1:30 PM", "2:00 PM","2:30 PM", "3:00 PM","3:30 PM", "4:00 PM","4:30 PM", "5:00 PM","5:30 PM", "6:00 PM","6:30 PM","7:00 PM"]
     prec=Voter.objects.get(user=request.user).pNum
     reprevoters=Repre.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
-    print(reprevoters)
     vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
-    print(vvoters)
-    for i in reprevoters:
-        print(i["scheduleddate"])
-    return render(request,"scheduling.html",{})
+    scheds=[]
+    print(schedules,len(schedules))
+    for i in schedules:
+        print(i)
+        tots=reprevoters.filter(scheduleddate__startswith=i).count()+vvoters.filter(scheduleddate__startswith=i).count()
+        print(tots)
+        scheds.append(tots)
+    return render(request,"scheduling.html",{"data":scheds})
 def pwrecovery_view(request,*args,**kwargs):
     return render(request,"pwrecovery.html",{})
 
