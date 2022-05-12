@@ -119,6 +119,28 @@ def scheduling_view(request,*args,**kwargs):
         print(tots)
         scheds.append(tots)
     return render(request,"scheduling.html",{"data":scheds,"stat":v.scheduled,"set":v.forscheduling})
+
+def repOwnSched_view(request,*args,**kwargs):
+    if request.method=="POST":
+        vote=Repre.objects.get(user=request.user)
+        vote.scheduleddate=request.POST["selectedSched"]
+        vote.forscheduling=True
+        vote.save()
+        return redirect("Home")
+    schedules=["7:00 AM","7:30 AM", "8:00 AM","8:30 AM", "9:00 AM","9:30 AM", "10:00 AM","10:30 AM", "11:00 AM","11:30 AM", "12:00 PM","12:30 PM", "1:00 PM","1:30 PM", "2:00 PM","2:30 PM", "3:00 PM","3:30 PM", "4:00 PM","4:30 PM", "5:00 PM","5:30 PM", "6:00 PM","6:30 PM","7:00 PM"]
+    v=Repre.objects.get(user=request.user)
+    prec=v.pNum
+    reprevoters=Repre.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    scheds=[]
+    print(v.scheduled)
+    for i in schedules:
+        print(i)
+        tots=reprevoters.filter(scheduleddate__startswith=i).count()+vvoters.filter(scheduleddate__startswith=i).count()
+        print(tots)
+        scheds.append(tots)
+    return render(request,"repOwnSched.html",{"data":scheds,"stat":v.scheduled,"set":v.forscheduling})
+
 def pwrecovery_view(request,*args,**kwargs):
     return render(request,"pwrecovery.html",{})
 
