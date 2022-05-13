@@ -70,6 +70,16 @@ def precinct_view(request,*args,**kwargs):
         vv=Voter.objects.filter(pNum=us).values("has_voted")
         rp=Repre.objects.filter(pNum=us).values("has_voted")
         print(vv,rp)
+    elif user.is_admin:
+        us='1234abc'
+        vv=Voter.objects.filter(pNum=us).values("has_voted")
+        rp=Repre.objects.filter(pNum=us).values("has_voted")
+        print(vv,rp)
+    elif user.is_rep:
+        us='1234abc'
+        vv=Voter.objects.filter(pNum=us).values("has_voted")
+        rp=Repre.objects.filter(pNum=us).values("has_voted")
+        print(vv,rp)
     voted=0
     for i in range(len(vv)):
         if vv[i]["has_voted"]:
