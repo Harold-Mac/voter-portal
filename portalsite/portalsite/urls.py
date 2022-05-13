@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
-from django.urls import path
+from django.urls import path, re_path
 from voters.views import createFaciview,createAdminview,createRepview, faciVerifyview, notRegisteredview, repSchedview,voterschedule
 from voters.views import home_view,precinct_view,redirectview,createacc_view,login_view,scheduling_view,repOwnSched_view,pwrecovery_view,profile_view,clang_view,logout_acc, testview, markvotedview
 urlpatterns = [
@@ -33,7 +33,7 @@ urlpatterns = [
     path("admn/login",login_view,name='login'),
     path("logout_acc",logout_acc,name='logout'),
     path("test",testview,name='test'),
-    path("markVoted/",markvotedview,name='markVoted'),
+    path("markVoted",markvotedview,name='markVoted'),
     path("createFaci",createFaciview,name="createFaci"),
     path("createAdmin",createAdminview,name="createAdmin"),
     path("createRep",createRepview,name="createRep"),
