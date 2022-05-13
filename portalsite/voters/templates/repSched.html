@@ -18,13 +18,15 @@
   display:none;
 }
 </style>
+<form method="POST">
+  {%csrf_token%}
 <div class="container">
   <h1 class="text-center">Schedule Voter</h1>
   <center>
-  <select id="votername" class="Voterselection">
+  <select id="votername" class="Voterselection" name="voter">
     <option value="0">--Select Voter--</option>
-    {% for i in voters%}
-      <option value={{i}}>{{i}}</option>
+    {% for i,j in voters%}
+      <option value={{i }}>{{j}}</option>
     {%endfor%}
   </select>
 </center>
@@ -64,14 +66,16 @@
             </select>
             
             <div id="demo">....</div>
-            <div id="sub"class="my-1 hide">
-                  <input type="submit" class="btn btn-success btn-icon-split" onclick="voterSchedule">
+                <div id="sub"class="my-1 hide">
+                  <input type="submit" class="btn btn-success btn-icon-split" onclick="repSched">
                       <i class="fas fa-check"></i>
                     </span>
                     <span class="text">Confirm time slot</span>
                   </a>
                 </input>
                 </div>
+              </div>
+            </form>
           {%else%}
             <p> Either account is already scheduled or is in the process of scheduling</p>
           {%endif%}

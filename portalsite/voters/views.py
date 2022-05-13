@@ -61,7 +61,6 @@ def profile_view(request,*args,**kwargs):
     return render(request,"profile.html",{'user':user,'name':full_name, 'info':info})
 
 def precinct_view(request,*args,**kwargs):
-    
     user=request.user
     full_name=''
     if not user.is_authenticated:
@@ -324,17 +323,24 @@ def repSchedview(request,*args,**kwargs):
     user=request.user
     if not user.is_authenticated:
         return redirect('Home')
+    if request.method=="POST":
+        id=int(request.POST["voter"])
+        if id>0:
+            obj=Repre.objects.get(id=id)
+            obj.forscheduling=True
+            obj.scheduleddate=request.POST["selectedSched"]
+            obj.save(update_fields=["forscheduling", "scheduleddate"])
     schedules=["7:00 AM","7:30 AM", "8:00 AM","8:30 AM", "9:00 AM","9:30 AM", "10:00 AM","10:30 AM", "11:00 AM","11:30 AM", "12:00 PM","12:30 PM", "1:00 PM","1:30 PM", "2:00 PM","2:30 PM", "3:00 PM","3:30 PM", "4:00 PM","4:30 PM", "5:00 PM","5:30 PM", "6:00 PM","6:30 PM","7:00 PM"]
     scheds=[0 for i in range(len(schedules))]
     names=[]
     repobj=Repre.objects.filter(user=user)
-    unscheduled=repobj.filter(scheduled=False,forscheduling=False).values("vFname","mName","vLname")
+    unscheduled=repobj.filter(scheduled=False,forscheduling=False).values("vFname","mName","vLname","id")
     prec=repobj[0].pNum
     reprevoters=Repre.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
     vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
     if repobj.count()>0:
         for i in unscheduled:
-            names.append("{} {}. {}".format(i["vFname"], i["mName"][0], i["vLname"]))
+            names.append([i["id"],"{} {}. {}".format(i["vFname"], i["mName"][0], i["vLname"])])
     for k in range(len(schedules)):
         i=schedules[k]
         tots=reprevoters.filter(scheduleddate__startswith=i).count()+vvoters.filter(scheduleddate__startswith=i).count()
