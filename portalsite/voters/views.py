@@ -27,10 +27,12 @@ def home_view(request,*args,**kwargs):
             sched=s.scheduleddate
             voted=s.has_voted
         elif user.is_rep:
-            s=Repre.objects.get(user=user)
-            is_scheduled=s.scheduled
-            sched=s.scheduleddate
-            voted=s.has_voted
+            s=Repre.objects.filter(user=user)
+            b=s.filter(has_voted=True).count()
+            c=s.filter(scheduled=True).count()
+            sched="{} out of {} scheduled".format(c,s.count())
+            voted="{} out of {} scheduled".format(b,s.count())
+            is_scheduled=True
         elif user.is_faci:
             s=Facis.objects.get(user=user)
             pNum=s.pNum
