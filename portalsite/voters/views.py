@@ -180,12 +180,6 @@ def logout_acc(request):
 def testview(request): #for testing of incorporated css and js files
     return render(request,"charts.html",{})
 
-def markvotedview(request):
-    user=request.user
-    info=Voter.objects.get(user=user)
-    
-    context = {'user': user, 'info': info}
-    return render(request, "markVoted.html", context)
 def createFaciview(request,*args,**kwargs):
     User = request.user
     form = CreateUserForm()
@@ -279,6 +273,34 @@ def faciVerifyview(request,*args,**kwargs):
     vvoters=Voter.objects.filter(pNum=pnum,forscheduling=True)
     print
     return render(request,"faciVerify.html",{'name':full_name,"rVoters":Reprevoters,"vVoters":vvoters})
+
+def markvotedview(request):
+    full_name=''
+    user=request.user
+    if not user.is_authenticated:
+        return redirect('Home')
+    full_name=user.first_name+" "+user.last_name
+    pnum=Facis.objects.get(user=user).pNum
+    if request.method=="POST":
+        req=request.POST["voted"]
+        pnum=Facis.objects.get(user=user).pNum
+        ck=User.objects.filter(username=req,is_voter=True)
+        if ck.count()>0: #from voter table
+            temp=ck[0]
+            obj=Voter.objects.get(user=temp)
+            obj.has_voted=True
+            obj.save(update_fields=['has_voted'])
+            return redirect("markVoted")
+        else:   #from repre
+            ck=Repre.objects.filter(id=int(req))
+            print(ck)
+            obj=ck[0]
+            obj.has_voted=True
+            obj.save(update_fields=['has_voted'])
+    Reprevoters=Repre.objects.filter(pNum=pnum,has_voted=False,scheduled=True)
+    voter=Voter.objects.filter(pNum=pnum,has_voted=False,scheduled=True)
+
+    return render(request, "markVoted.html", {'user': user, "rVoters":Reprevoters, 'vVoters': voter})
 
 def notRegisteredview(request,*args,**kwargs):
     full_name=''

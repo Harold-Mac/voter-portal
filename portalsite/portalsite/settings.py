@@ -127,3 +127,4 @@ STATICFILES_DIRS=[Path.joinpath(BASE_DIR,'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTO_LOGOUT = {'IDLE_TIME': 1200,
 'REDIRECT_TO_LOGIN_IMMEDIATELY': True,}
+APPEND_SLASH = False
