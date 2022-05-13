@@ -2,21 +2,28 @@ from multiprocessing import context
 from random import randint
 from re import L
 import re
+from sched import scheduler
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.shortcuts import render,redirect 
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.hashers import check_password
-from .models import Precinct, User,Voter,Admin,Repre, Faci
+from .models import Precinct, User,Voter,Admin,Repre, Facis
 from .forms import CreateUserForm
 from django.contrib import messages
 # Create your views here.
 def home_view(request,*args,**kwargs):
     user=request.user
     full_name=''
+    is_scheduled=False
+    sched="Not Yet Scheduled"
     if user.is_authenticated:
         full_name=user.first_name+" "+user.last_name
-    return render(request,"base.html",{'user':user, 'name':full_name})
+        if user.is_voter:
+            s=Voter.objects.get(user=user)
+            is_scheduled=s.scheduled
+            sched=s.scheduleddate
+    return render(request,"base.html",{'user':user, 'name':full_name,"sch":is_scheduled,"sched":sched})
 
 def profile_view(request,*args,**kwargs):
     user=request.user
@@ -41,18 +48,25 @@ def profile_view(request,*args,**kwargs):
     return render(request,"profile.html",{'user':user,'name':full_name, 'info':info})
 
 def precinct_view(request,*args,**kwargs):
-    a=randint(1,20)
-    b=randint(0,30)
+    
     user=request.user
     full_name=''
     if not user.is_authenticated:
         return redirect('Home')
-    print("rep:",user.is_rep)
-    print("faci:",user.is_faci)
-    print("voter", user.is_voter)
-    print("admin:",user.is_admin)
+    if user.is_voter:
+        us=Voter.objects.get(user=user).pNum
+        vv=Voter.objects.filter(pNum=us).values("has_voted")
+        rp=Repre.objects.filter(pNum=us).values("has_voted")
+        print(vv,rp)
+    voted=0
+    for i in range(len(vv)):
+        if vv[i]["has_voted"]:
+            voted+=1
+    for i in range(len(rp)):
+        if rp[i]["has_voted"]:
+            voted+=1
     full_name=user.first_name+" "+user.last_name
-    return render(request,"precinct.html",{'name':full_name,"top5":["8:30 AM - 9:00 AM (30%)","7:30 AM - 8:00 AM(20%)","2:30 PM - 3:00 PM(15%)","8:00 AM - 8:30 AM(10%)","1:00 PM - 1:30 PM(5%)"],'v':a,'nv':b})
+    return render(request,"precinct.html",{'name':full_name,"top5":["8:30 AM - 9:00 AM (30%)","7:30 AM - 8:00 AM(20%)","2:30 PM - 3:00 PM(15%)","8:00 AM - 8:30 AM(10%)","1:00 PM - 1:30 PM(5%)"],'v':voted,'nv':len(vv)+len(rp)-voted})
 def redirectview(request,*args,**kwargs):
     r=redirect('Home')
     return r
@@ -68,13 +82,13 @@ def createacc_view(request,*args,**kwargs):
                 print(p)
                 address="{}, {}, {}, {}".format(p['street'],p['Barangay'],p['Municipality'],p['province'])
                 new_user=form.save()
-                v=Voter(user=new_user,mName=p['MiddleName'],pNum='1234abc',Add=address,contact='09234566789')
+                v=Voter(user=new_user,mName=p['MiddleName'],pNum='1234abc', vId= '7016-1234abc-125XYZ', Add=address,contact=p['contact'])
                 try:
                     v.save()
                 except Exception:
                     messages.warning(request,"Invalid Registration.")
                     return redirect("creation")
-                messages.success(request,"Account Created!")
+                messages.success(request,"Account Created! Your username is "+p['first_name'].replace(" ", "").lower()+"."+p['last_name'].replace(" ", "").lower())
                 return redirect("creation")
             else:
                 messages.warning(request,"Invalid Registration.")
@@ -86,8 +100,47 @@ def createacc_view(request,*args,**kwargs):
         return render(request,"createaccount.html", {'form':form})
 
 def scheduling_view(request,*args,**kwargs):
-    my_context={"scheds":["8:30 AM - 9:00 AM","7:30 AM - 8:00 AM","2:30 PM - 3:00 PM","8:00 AM - 8:30 AM","1:00 PM - 1:30 PM"],"traffic":[10,23,5,6,12]}
-    return render(request,"scheduling.html",my_context)
+    if request.method=="POST":
+        vote=Voter.objects.get(user=request.user)
+        vote.scheduleddate=request.POST["selectedSched"]
+        vote.forscheduling=True
+        vote.save()
+        return redirect("Home")
+    schedules=["7:00 AM","7:30 AM", "8:00 AM","8:30 AM", "9:00 AM","9:30 AM", "10:00 AM","10:30 AM", "11:00 AM","11:30 AM", "12:00 PM","12:30 PM", "1:00 PM","1:30 PM", "2:00 PM","2:30 PM", "3:00 PM","3:30 PM", "4:00 PM","4:30 PM", "5:00 PM","5:30 PM", "6:00 PM","6:30 PM","7:00 PM"]
+    v=Voter.objects.get(user=request.user)
+    prec=v.pNum
+    reprevoters=Repre.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    scheds=[]
+    print(v.scheduled)
+    for i in schedules:
+        print(i)
+        tots=reprevoters.filter(scheduleddate__startswith=i).count()+vvoters.filter(scheduleddate__startswith=i).count()
+        print(tots)
+        scheds.append(tots)
+    return render(request,"scheduling.html",{"data":scheds,"stat":v.scheduled,"set":v.forscheduling})
+
+def repOwnSched_view(request,*args,**kwargs):
+    if request.method=="POST":
+        vote=Repre.objects.get(user=request.user)
+        vote.scheduleddate=request.POST["selectedSched"]
+        vote.forscheduling=True
+        vote.save()
+        return redirect("Home")
+    schedules=["7:00 AM","7:30 AM", "8:00 AM","8:30 AM", "9:00 AM","9:30 AM", "10:00 AM","10:30 AM", "11:00 AM","11:30 AM", "12:00 PM","12:30 PM", "1:00 PM","1:30 PM", "2:00 PM","2:30 PM", "3:00 PM","3:30 PM", "4:00 PM","4:30 PM", "5:00 PM","5:30 PM", "6:00 PM","6:30 PM","7:00 PM"]
+    v=Repre.objects.get(user=request.user)
+    prec=v.pNum
+    reprevoters=Repre.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    scheds=[]
+    print(v.scheduled)
+    for i in schedules:
+        print(i)
+        tots=reprevoters.filter(scheduleddate__startswith=i).count()+vvoters.filter(scheduleddate__startswith=i).count()
+        print(tots)
+        scheds.append(tots)
+    return render(request,"repOwnSched.html",{"data":scheds,"stat":v.scheduled,"set":v.forscheduling})
+
 def pwrecovery_view(request,*args,**kwargs):
     return render(request,"pwrecovery.html",{})
 
@@ -144,13 +197,13 @@ def createFaciview(request,*args,**kwargs):
                 print(s)
                 address="{}, {}, {}, {}".format(s['street'],s['Barangay'],s['Municipality'],s['province'])
                 new_user=form.savefaci()
-                f=Faci(user=new_user, mName=s['MiddleName'], Add=address, pNum=s['pNum'])
+                f=Facis(user=new_user, mName=s['MiddleName'], Add=address, pNum=s['pNum'])
                 try:
                     f.save()
                 except Exception:
                     messages.warning(request,"Invalid Registration.")
                     return redirect("createFaci")
-                messages.success(request,"Account Created!")
+                messages.success(request,"Account Created!  Your username is "+s['first_name'].replace(" ", "").lower()+"."+s['last_name'].replace(" ", "").lower())
                 return redirect("createFaci")
             else:
                 messages.warning(request,"Invalid Registration.")
@@ -171,13 +224,13 @@ def createRepview(request,*args,**kwargs):
                 print(q)
                 address="{}, {}, {}, {}".format(q['street'],q['Barangay'],q['Municipality'],q['province'])
                 new_user=form.saverep()
-                r=Repre(user=new_user, mName=q['MiddleName'], vFname=q['first_name'], vLname=q['last_name'], Add=address, pNum='1234abc', contact='09234566789')
+                r=Repre(user=new_user, mName=q['MiddleName'], vFname=q['first_name'], vLname=q['last_name'], Add=address, pNum='1234abc', vId= '7016-1234abc-125XYZ', contact=q['contact'])
                 try:
                     r.save()
                 except Exception:
                     messages.warning(request,"Invalid Registration.")
                     return redirect("createRep")
-                messages.success(request,"Account Created!")
+                messages.success(request,"Account Created! Your username is "+q['first_name'].replace(" ", "").lower()+"."+q['last_name'].replace(" ", "").lower())
                 return redirect("createRep")
             else:
                 messages.warning(request,"Invalid Registration.")
@@ -202,7 +255,30 @@ def faciVerifyview(request,*args,**kwargs):
     if not user.is_authenticated:
         return redirect('Home')
     full_name=user.first_name+" "+user.last_name
-    return render(request,"faciVerify.html",{'name':full_name})
+    pnum=Facis.objects.get(user=user).pNum
+    print(pnum)
+    if request.method=="POST":
+        req=request.POST["verify"]
+        pnum=Facis.objects.get(user=user).pNum
+        ck=User.objects.filter(username=req,is_voter=True)
+        if ck.count()>0: #from voter table
+            temp=ck[0]
+            obj=Voter.objects.get(user=temp)
+            obj.forscheduling=False
+            obj.scheduled=True
+            obj.save(update_fields=['forscheduling','scheduled'])
+            return redirect("faciVerify")
+        else:   #from repre
+            ck=Repre.objects.filter(id=int(req))
+            print(ck)
+            obj=ck[0]
+            obj.forscheduling=False
+            obj.scheduled=True
+            obj.save(update_fields=['forscheduling','scheduled'])
+    Reprevoters=Repre.objects.filter(pNum=pnum,forscheduling=True)
+    vvoters=Voter.objects.filter(pNum=pnum,forscheduling=True)
+    print
+    return render(request,"faciVerify.html",{'name':full_name,"rVoters":Reprevoters,"vVoters":vvoters})
 
 def notRegisteredview(request,*args,**kwargs):
     full_name=''
@@ -213,5 +289,23 @@ def repSchedview(request,*args,**kwargs):
     user=request.user
     if not user.is_authenticated:
         return redirect('Home')
+    schedules=["7:00 AM","7:30 AM", "8:00 AM","8:30 AM", "9:00 AM","9:30 AM", "10:00 AM","10:30 AM", "11:00 AM","11:30 AM", "12:00 PM","12:30 PM", "1:00 PM","1:30 PM", "2:00 PM","2:30 PM", "3:00 PM","3:30 PM", "4:00 PM","4:30 PM", "5:00 PM","5:30 PM", "6:00 PM","6:30 PM","7:00 PM"]
+    scheds=[0 for i in range(len(schedules))]
+    names=[]
+    repobj=Repre.objects.filter(user=user)
+    unscheduled=repobj.filter(scheduled=False,forscheduling=False).values("vFname","mName","vLname")
+    prec=repobj[0].pNum
+    reprevoters=Repre.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    vvoters=Voter.objects.filter(pNum=prec,scheduled=True).values("scheduleddate")
+    if repobj.count()>0:
+        for i in unscheduled:
+            names.append("{} {}. {}".format(i["vFname"], i["mName"][0], i["vLname"]))
+    for k in range(len(schedules)):
+        i=schedules[k]
+        tots=reprevoters.filter(scheduleddate__startswith=i).count()+vvoters.filter(scheduleddate__startswith=i).count()
+        scheds[k]=tots
     full_name=user.first_name+" "+user.last_name
-    return render(request,"repSched.html",{'name':full_name})
+    return render(request,"repSched.html",{'name':full_name, "data":scheds,"voters":names})
+def voterschedule(request):
+    print(request.POST["sched"])
+    return redirect("Home")

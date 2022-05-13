@@ -17,9 +17,8 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import path
-from voters.views import createFaciview,createAdminview,createRepview, faciVerifyview, notRegisteredview, repSchedview
-from voters.views import home_view,precinct_view,redirectview,createacc_view,login_view,scheduling_view,pwrecovery_view,profile_view,clang_view,logout_acc, testview, markvotedview
-from adminside.views import ahome_view ,count_view,redir_view
+from voters.views import createFaciview,createAdminview,createRepview, faciVerifyview, notRegisteredview, repSchedview,voterschedule
+from voters.views import home_view,precinct_view,redirectview,createacc_view,login_view,scheduling_view,repOwnSched_view,pwrecovery_view,profile_view,clang_view,logout_acc, testview, markvotedview
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('Home',home_view,name="Home"),
@@ -31,7 +30,6 @@ urlpatterns = [
     path('recovery',pwrecovery_view,name="recovery"),
     path("profile",profile_view,name="profile"),
     path("langsetting",clang_view,name="language"),
-    path("admin-count",count_view,name="adminBallot"),
     path("admn/login",login_view,name='login'),
     path("logout_acc",logout_acc,name='logout'),
     path("test",testview,name='test'),
@@ -42,4 +40,6 @@ urlpatterns = [
     path("faciVerify",faciVerifyview,name="faciVerify"),
     path("notRegistered",notRegisteredview,name="notRegistered"),
     path("repSched",repSchedview,name="repSched"),
+    path("repOwnSched",repOwnSched_view,name="repOwnSched"),
+    path("voterSchedule",voterschedule,name="voterSched"),
 ]
