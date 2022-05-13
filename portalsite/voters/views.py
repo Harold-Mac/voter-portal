@@ -17,13 +17,24 @@ def home_view(request,*args,**kwargs):
     full_name=''
     is_scheduled=False
     sched="Not Yet Scheduled"
+    voted=False
+    pNum = "abc"
     if user.is_authenticated:
         full_name=user.first_name+" "+user.last_name
         if user.is_voter:
             s=Voter.objects.get(user=user)
             is_scheduled=s.scheduled
             sched=s.scheduleddate
-    return render(request,"base.html",{'user':user, 'name':full_name,"sch":is_scheduled,"sched":sched})
+            voted=s.has_voted
+        elif user.is_rep:
+            s=Repre.objects.get(user=user)
+            is_scheduled=s.scheduled
+            sched=s.scheduleddate
+            voted=s.has_voted
+        elif user.is_faci:
+            s=Facis.objects.get(user=user)
+            pNum=s.pNum
+    return render(request,"base.html",{'user':user, 'name':full_name,"sch":is_scheduled, 'voted':voted, "sched":sched, "pNum":pNum})
 
 def profile_view(request,*args,**kwargs):
     user=request.user
